@@ -92,7 +92,7 @@ function handleCellClick(clickedCellEvent) {
 function handleRestartGame() {
   gameActive = true;
   currentPlayer = 'X';
-  gameState = ['', '', '', '', '', '', '', '', ''];
+  gameState.fill('');
   statusDisplay.innerHTML = currentPlayerTurn();
   document.querySelectorAll('.cell').forEach(cell => (cell.innerHTML = ''));
 }
@@ -129,8 +129,6 @@ function bestMove() {
 function minimax(board, depth, isMaximizing) {
   let winner = null;
   if (winner = checkWinner()) {
-    console.log(winner);
-    console.log(scores[winner]);
     return scores[winner];
   }
 
