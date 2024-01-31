@@ -7,15 +7,17 @@ const scores = {
   tie: 0 // اگر مساوی شد
 };
 
-let currentPlayer = 'X';
-let gameActive = true;
+const initialState = {
+  currentPlayer: "X",
+  gameActive: true
+}
 
 // ['', '', '', '', '', '', '', '', ''];
 const gameState = new Array(9).fill('');
 
 // فراخوانی این توابع => نمایش پیغام‌ها
-const currentPlayerTurn = () => `It's ${currentPlayer}'s turn`;
-const winningMessage = () => `Player ${currentPlayer} has won!`;
+const currentPlayerTurn = () => `It's ${initialState.currentPlayer}'s turn`;
+const winningMessage = () => `Player ${initialState.currentPlayer} has won!`;
 const drawMessage = () => `Game ended in a draw!`;
 
 statusDisplay.innerHTML = currentPlayerTurn();
@@ -32,14 +34,14 @@ const winningConditions = [
 ];
 
 function handleCellPlayed(clickedCell, clickedCellIndex) {
-  gameState[clickedCellIndex] = currentPlayer;
-  clickedCell.innerHTML = currentPlayer;
+  gameState[clickedCellIndex] = initialState.currentPlayer;
+  clickedCell.innerHTML = initialState.currentPlayer;
 }
 
 function handlePlayerChange() {
-  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+  initialState.currentPlayer = initialState.currentPlayer === 'X' ? 'O' : 'X';
   statusDisplay.innerHTML = currentPlayerTurn();
-  if (currentPlayer === 'O') {
+  if (initialState.currentPlayer === 'O') {
     bestMove();
   }
 }
@@ -62,14 +64,14 @@ function handleResultValidation() {
 
   if (roundWon) {
     statusDisplay.innerHTML = winningMessage();
-    gameActive = false;
+    initialState.gameActive = false;
     return;
   }
 
   let roundDraw = !gameState.includes('');
   if (roundDraw) {
     statusDisplay.innerHTML = drawMessage();
-    gameActive = false;
+    initialState.gameActive = false;
     return;
   }
 
@@ -82,7 +84,7 @@ function handleCellClick(clickedCellEvent) {
     clickedCell.getAttribute('data-cell-index')
   );
 
-  if (gameState[clickedCellIndex] !== '' || !gameActive) {
+  if (gameState[clickedCellIndex] !== '' || !initialState.gameActive) {
     return;
   }
 
@@ -91,8 +93,8 @@ function handleCellClick(clickedCellEvent) {
 }
 
 function handleRestartGame() {
-  gameActive = true;
-  currentPlayer = 'X';
+  initialState.gameActive = true;
+  initialState.currentPlayer = 'X';
   gameState.fill('');
   statusDisplay.innerHTML = currentPlayerTurn();
   document.querySelectorAll('.cell').forEach(cell => (cell.innerHTML = ''));
