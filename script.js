@@ -1,9 +1,10 @@
 const statusDisplay = document.querySelector('.game--status');
 
+// امتیازدهی به هر موقعیت برای ربات تا بهترین تصمیم رو بگیره
 const scores = {
-  X: -1,
-  O: 1,
-  tie: 0
+  X: -1, // اگر مخاطب برد
+  O: 1, // اگر ربات برد
+  tie: 0 // اگر مساوی شد
 };
 
 let currentPlayer = 'X';
@@ -192,7 +193,7 @@ function checkWinner() {
     }
   }
 
-
+  // بررسی مساوی شدن و بازگردانی بازیکن برنده
   if (winner === null && openSpots === 0) {
     return 'tie';
   } else {
