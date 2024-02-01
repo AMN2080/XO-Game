@@ -7,6 +7,7 @@ const scores = {
   tie: 0 // اگر مساوی شد
 };
 
+// مقداردهی اولیه
 const initialState = {
   currentPlayer: "X",
   gameActive: true
@@ -73,9 +74,8 @@ document
   .querySelector('.game--restart')
   .addEventListener('click', handleRestartGame);
 
-// AI Code
+// یافتن و انتخاب بهترین حرکت برای دایره
 function bestMove() {
-  // AI to make its turn
   let bestScore = -Infinity;
   let move;
   for (let i = 0; i < 9; i++) {
@@ -95,9 +95,12 @@ function bestMove() {
   document.querySelector(`[data-cell-index="${move}"]`).innerHTML = 'O';
   handleResultValidation();
 }
+
 // الگوریتم بررسی تمامی احتمالات بازی
 function minimax(board, depth, isMaximizing) { // cell 0, depth 0, isMaximizing false
   let winner = null;
+
+  // امتیاز رو به طبقه بالاتر میفرسته
   if (winner = checkWinner()) {
     return scores[winner];
   }
@@ -105,11 +108,13 @@ function minimax(board, depth, isMaximizing) { // cell 0, depth 0, isMaximizing 
   if (isMaximizing) {
     let bestScore = -Infinity;
     for (let i = 0; i < 9; i++) {
-      // Is the spot available?
+      // خانه موردنظر خالیه؟
       if (board[i] === '') {
+        // اگه دایره توی اون جای خالی قرار بگیره جریان چطور پیش میره؟
         board[i] = 'O';
         let score = minimax(board, depth + 1, false);
         board[i] = '';
+        // برنده شدن دایره برابر با امتیاز بیشتر برای دایره هست
         bestScore = Math.max(score, bestScore);
       }
     }
@@ -117,11 +122,13 @@ function minimax(board, depth, isMaximizing) { // cell 0, depth 0, isMaximizing 
   } else {
     let bestScore = Infinity;
     for (let i = 0; i < 9; i++) {
-      // Is the spot available?
+      // خانه مورد نظر خالیه؟
       if (board[i] === '') {
+        // اگه ضربدر توی اون جای خالی قرار بگیره جریان چطور پیش میره؟
         board[i] = 'X';
         let score = minimax(board, depth + 1, true);
         board[i] = '';
+        // برنده شدن ضربدر برابر با امتیاز کمتر برای دایره هست
         bestScore = Math.min(score, bestScore);
       }
     }
