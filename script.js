@@ -16,11 +16,7 @@ const initialState = {
 const gameState = new Array(9).fill('');
 
 // فراخوانی این توابع => نمایش پیغام‌ها
-const currentPlayerTurn = () => `It's ${initialState.currentPlayer}'s turn`;
-const winningMessage = () => `Player ${initialState.currentPlayer} has won!`;
 const drawMessage = () => `Game ended in a draw!`;
-
-statusDisplay.innerHTML = currentPlayerTurn();
 
 function handleCellPlayed(clickedCell, clickedCellIndex) {
   gameState[clickedCellIndex] = initialState.currentPlayer;
@@ -29,7 +25,6 @@ function handleCellPlayed(clickedCell, clickedCellIndex) {
 
 function handlePlayerChange() {
   initialState.currentPlayer = initialState.currentPlayer === 'X' ? 'O' : 'X';
-  statusDisplay.innerHTML = currentPlayerTurn();
   if (initialState.currentPlayer === 'O' && initialState.gameActive) {
     bestMove();
   }
@@ -37,7 +32,7 @@ function handlePlayerChange() {
 
 function handleResultValidation() {
   if (checkWinner() === "X" || checkWinner() === "O") {
-    statusDisplay.innerHTML = winningMessage();
+    statusDisplay.innerHTML = `Player ${initialState.currentPlayer} has won!`;
     initialState.gameActive = false;
     return;
   }
@@ -70,8 +65,8 @@ function handleRestartGame() {
   initialState.gameActive = true;
   initialState.currentPlayer = 'X';
   gameState.fill('');
-  statusDisplay.innerHTML = currentPlayerTurn();
   document.querySelectorAll('.cell').forEach(cell => (cell.innerHTML = ''));
+  statusDisplay.innerHTML = "What is your move?";
 }
 
 document
