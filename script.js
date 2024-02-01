@@ -15,9 +15,6 @@ const initialState = {
 // خونه‌های بازی
 const gameState = new Array(9).fill('');
 
-// فراخوانی این توابع => نمایش پیغام‌ها
-const drawMessage = () => `Game ended in a draw!`;
-
 function handleCellPlayed(clickedCell, clickedCellIndex) {
   gameState[clickedCellIndex] = initialState.currentPlayer;
   clickedCell.innerHTML = initialState.currentPlayer;
@@ -39,7 +36,7 @@ function handleResultValidation() {
 
   let roundDraw = !gameState.includes('');
   if (roundDraw) {
-    statusDisplay.innerHTML = drawMessage();
+    statusDisplay.innerHTML = "Game ended in a draw!";
     initialState.gameActive = false;
     return;
   }
