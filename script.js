@@ -12,7 +12,7 @@ const initialState = {
   gameActive: true
 }
 
-// ['', '', '', '', '', '', '', '', ''];
+// خونه‌های بازی
 const gameState = new Array(9).fill('');
 
 // فراخوانی این توابع => نمایش پیغام‌ها
@@ -22,17 +22,6 @@ const drawMessage = () => `Game ended in a draw!`;
 
 statusDisplay.innerHTML = currentPlayerTurn();
 
-const winningConditions = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6]
-];
-
 function handleCellPlayed(clickedCell, clickedCellIndex) {
   gameState[clickedCellIndex] = initialState.currentPlayer;
   clickedCell.innerHTML = initialState.currentPlayer;
@@ -41,28 +30,13 @@ function handleCellPlayed(clickedCell, clickedCellIndex) {
 function handlePlayerChange() {
   initialState.currentPlayer = initialState.currentPlayer === 'X' ? 'O' : 'X';
   statusDisplay.innerHTML = currentPlayerTurn();
-  if (initialState.currentPlayer === 'O') {
+  if (initialState.currentPlayer === 'O' && initialState.gameActive) {
     bestMove();
   }
 }
 
 function handleResultValidation() {
-  let roundWon = false;
-  for (let i = 0; i <= winningConditions.length - 1; i++) {
-    const winCondition = winningConditions[i];
-    let a = gameState[winCondition[0]];
-    let b = gameState[winCondition[1]];
-    let c = gameState[winCondition[2]];
-    if (a === '' || b === '' || c === '') {
-      continue;
-    }
-    if (a === b && b === c) {
-      roundWon = true;
-      break;
-    }
-  }
-
-  if (roundWon) {
+  if (checkWinner() === "X" || checkWinner() === "O") {
     statusDisplay.innerHTML = winningMessage();
     initialState.gameActive = false;
     return;
@@ -113,11 +87,12 @@ function bestMove() {
   let bestScore = -Infinity;
   let move;
   for (let i = 0; i < 9; i++) {
-    // Is the spot available?
+    // خانه‌های خالی رو بگیر و تک تک چک کن تا اونی که بالاترین امتیاز رو میاره انتخاب کنی
     if (gameState[i] === '') {
       gameState[i] = 'O';
       let score = minimax(gameState, 0, false);
       gameState[i] = '';
+      // انتخاب خانه‌ای که بالاترین امتیاز رو میاره
       if (score > bestScore) {
         bestScore = score;
         move = i;
@@ -128,8 +103,8 @@ function bestMove() {
   document.querySelector(`[data-cell-index="${move}"]`).innerHTML = 'O';
   handleResultValidation();
 }
-
-function minimax(board, depth, isMaximizing) {
+// الگوریتم بررسی تمامی احتمالات بازی
+function minimax(board, depth, isMaximizing) { // cell 0, depth 0, isMaximizing false
   let winner = null;
   if (winner = checkWinner()) {
     return scores[winner];
