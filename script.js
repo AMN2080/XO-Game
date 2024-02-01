@@ -41,7 +41,7 @@ function handleCellPlayed(clickedCell, clickedCellIndex) {
 function handlePlayerChange() {
   initialState.currentPlayer = initialState.currentPlayer === 'X' ? 'O' : 'X';
   statusDisplay.innerHTML = currentPlayerTurn();
-  if (initialState.currentPlayer === 'O') {
+  if (initialState.currentPlayer === 'O' && initialState.gameActive) {
     bestMove();
   }
 }
@@ -113,11 +113,12 @@ function bestMove() {
   let bestScore = -Infinity;
   let move;
   for (let i = 0; i < 9; i++) {
-    // Is the spot available?
+    // خانه‌های خالی رو بگیر و تک تک چک کن تا اونی که بالاترین امتیاز رو میاره انتخاب کنی
     if (gameState[i] === '') {
       gameState[i] = 'O';
       let score = minimax(gameState, 0, false);
       gameState[i] = '';
+      // انتخاب خانه‌ای که بالاترین امتیاز رو میاره
       if (score > bestScore) {
         bestScore = score;
         move = i;
@@ -128,8 +129,8 @@ function bestMove() {
   document.querySelector(`[data-cell-index="${move}"]`).innerHTML = 'O';
   handleResultValidation();
 }
-
-function minimax(board, depth, isMaximizing) {
+// الگوریتم بررسی تمامی احتمالات بازی
+function minimax(board, depth, isMaximizing) { // cell 0, depth 0, isMaximizing false
   let winner = null;
   if (winner = checkWinner()) {
     return scores[winner];
