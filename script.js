@@ -12,7 +12,7 @@ const initialState = {
   gameActive: true
 }
 
-// ['', '', '', '', '', '', '', '', ''];
+// خونه‌های بازی
 const gameState = new Array(9).fill('');
 
 // فراخوانی این توابع => نمایش پیغام‌ها
@@ -21,17 +21,6 @@ const winningMessage = () => `Player ${initialState.currentPlayer} has won!`;
 const drawMessage = () => `Game ended in a draw!`;
 
 statusDisplay.innerHTML = currentPlayerTurn();
-
-const winningConditions = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6]
-];
 
 function handleCellPlayed(clickedCell, clickedCellIndex) {
   gameState[clickedCellIndex] = initialState.currentPlayer;
@@ -47,22 +36,7 @@ function handlePlayerChange() {
 }
 
 function handleResultValidation() {
-  let roundWon = false;
-  for (let i = 0; i <= winningConditions.length - 1; i++) {
-    const winCondition = winningConditions[i];
-    let a = gameState[winCondition[0]];
-    let b = gameState[winCondition[1]];
-    let c = gameState[winCondition[2]];
-    if (a === '' || b === '' || c === '') {
-      continue;
-    }
-    if (a === b && b === c) {
-      roundWon = true;
-      break;
-    }
-  }
-
-  if (roundWon) {
+  if (checkWinner() === "X" || checkWinner() === "O") {
     statusDisplay.innerHTML = winningMessage();
     initialState.gameActive = false;
     return;
