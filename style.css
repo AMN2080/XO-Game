@@ -23,6 +23,7 @@ body{
 }
 
 .cell {
+  font-display: block;
   font-family: 'Gamja Flower', sans-serif;
   width: 100px;
   height: 100px;
