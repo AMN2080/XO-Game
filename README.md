@@ -1,4 +1,4 @@
-# tic tac toe Game with Minimax Algorithm
+# tic tac toe Game with Minimax Algorithm for O
 
 a simple mini-project for practice
 
